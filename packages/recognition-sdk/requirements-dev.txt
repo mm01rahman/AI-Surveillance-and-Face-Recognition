@@ -4,3 +4,4 @@ pytest
 pre-commit
 build
 mkdocs
+numpy
