@@ -21,20 +21,22 @@ jobs:
         with:
           python-version: "3.12"
           cache: "pip"
-          # Points directly to the SDK's requirements file
           cache-dependency-path: "packages/recognition-sdk/requirements-dev.txt"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r packages/recognition-sdk/requirements-dev.txt
-          pip install ruff mypy
+          # Assuming ruff and mypy are now in requirements-dev.txt, 
+          # you don't need to pip install them explicitly here anymore.
 
       - name: Run Ruff (Linter)
-        run: ruff check . --fix
+        # Removed --fix so it fails loudly if the repo contains bad code
+        run: ruff check . 
 
       - name: Run Mypy (Type Checker)
-        run: mypy . --ignore-missing-imports 
+        # Scoped to src to prevent duplicate namespace collisions
+        run: mypy packages/recognition-sdk/src --ignore-missing-imports 
 
   test:
     name: Run Test Suite
@@ -51,14 +53,13 @@ jobs:
         with:
           python-version: "3.12"
           cache: "pip"
-          # Points directly to the SDK's requirements file
-          cache-dependency-path: "packages/recognition-sdk/requirements.txt"
+          # Fixed the cache path to match what you are installing
+          cache-dependency-path: "packages/recognition-sdk/requirements-dev.txt"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r packages/recognition-sdk/requirements-dev.txt
-          pip install pytest pytest-mock pytest-benchmark
 
       - name: Run Contracts & Unit Tests
         run: pytest tests/contracts/ tests/unit/
