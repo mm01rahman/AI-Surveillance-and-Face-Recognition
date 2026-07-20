@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
 from ...types import ImageArray
-from models import FaceLandmarks
+from models import FaceLandmarks, AlignedFace
+
 
 class Aligner(ABC):
-    """Abstract interface for face alignment."""
+    """Abstract interface for all face alignment models."""
     
     @abstractmethod
-    def align(self, image: ImageArray, landmarks: FaceLandmarks) -> ImageArray:
+    def align(self, image: ImageArray, landmarks: FaceLandmarks) -> AlignedFace:
         """
         Takes the original image and the detected facial landmarks,
-        and returns a cropped, transformed, and perfectly aligned face array.
+        and returns a wrapped AlignedFace model containing the transformed image.
         """
         raise NotImplementedError

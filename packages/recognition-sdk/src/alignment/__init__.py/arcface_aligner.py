@@ -1,34 +1,25 @@
-import cv2
 import numpy as np
-from typing import cast  
+from dataclasses import dataclass, field
 
 from ...types import ImageArray
-from models import FaceLandmarks
-from exceptions import AlignmentError
+from models import FaceLandmarks, AlignedFace
 from aligner import Aligner
+from alignment.template import get_reference_landmarks
+from alignment.similarity import apply_similarity_transform
 
-
-# The strict pixel coordinates ArcFace expects for a 112x112 image.
-# Do not alter these; they are mathematically tied to the ArcFace weights.
-ARCFACE_REFERENCE_112 = np.array([
-    [38.2946, 51.6963],  # Left eye
-    [73.5318, 51.5014],  # Right eye
-    [56.0252, 71.7366],  # Nose
-    [41.5493, 92.3655],  # Left mouth
-    [70.7299, 92.2041]   # Right mouth
-], dtype=np.float32)
-
-
+@dataclass(slots=True)
 class ArcFaceAligner(Aligner):
-    def __init__(self, output_size: tuple[int, int] = (112, 112)):
-        self.output_size = output_size
-        self.reference_landmarks = ARCFACE_REFERENCE_112
+    output_size: tuple[int, int] = (112, 112)
+    reference_landmarks: np.ndarray = field(init=False)
+    
+    def __post_init__(self):
+        # Cache the dynamically scaled template at initialization
+        self.reference_landmarks = get_reference_landmarks(self.output_size)
 
-    def align(self, image: ImageArray, landmarks: FaceLandmarks) -> ImageArray:
-        """Aligns the face using an Affine Similarity Transformation."""
+    def align(self, image: ImageArray, landmarks: FaceLandmarks) -> AlignedFace:
+        """Aligns the face for ArcFace inference."""
         
-        # 1. Convert our strict dataclass into a raw numpy array for OpenCV
-        src_pts = np.array([
+        source_landmarks = np.array([
             landmarks.left_eye,
             landmarks.right_eye,
             landmarks.nose,
@@ -36,27 +27,14 @@ class ArcFaceAligner(Aligner):
             landmarks.right_mouth
         ], dtype=np.float32)
 
-        # 2. Calculate the similarity transformation matrix.
-        # cv2.LMEDS is a robust method that handles minor landmark noise well.
-        tform, _ = cv2.estimateAffinePartial2D(
-            src_pts, 
+        aligned_image = apply_similarity_transform(
+            image, 
+            source_landmarks, 
             self.reference_landmarks, 
-            method=cv2.LMEDS
+            self.output_size
         )
-
-        if tform is None:
-            raise AlignmentError("Failed to calculate affine transformation matrix.")
-
-        # 3. Apply the transformation to the original image
-        try:
-            aligned_face = cv2.warpAffine(
-                image,
-                tform,
-                self.output_size,
-                borderValue=0.0  # Pad out-of-bounds areas with black
-            )
-        except Exception as e:
-            raise AlignmentError(f"Failed to warp image: {e}")
-
-        # 4. Cast the OpenCV return type to satisfy Pylance's strict checks
-        return cast(ImageArray, aligned_face)
+        
+        return AlignedFace(
+            image=aligned_image, 
+            landmarks=landmarks
+        )

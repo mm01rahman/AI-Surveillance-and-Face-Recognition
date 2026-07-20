@@ -40,6 +40,13 @@ class FaceLandmarks:
     nose: LandmarkPoint
     left_mouth: LandmarkPoint
     right_mouth: LandmarkPoint
+    
+    
+@dataclass
+class AlignedFace:
+    image: ImageArray
+    landmarks: FaceLandmarks
+    # Future-proofed for: transform_matrix, original_bbox, quality_score, etc.
 
 
 @dataclass
