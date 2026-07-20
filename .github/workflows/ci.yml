@@ -10,56 +10,58 @@ jobs:
   lint-and-typecheck:
     name: Lint & Type Check
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
     env:
       PYTHONPATH: packages/recognition-sdk/src
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: "pip"
-          cache-dependency-path: "requirements.txt"
+          # Points directly to the SDK's requirements file
+          cache-dependency-path: "packages/recognition-sdk/requirements-dev.txt"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt ruff mypy
+          pip install -r packages/recognition-sdk/requirements-dev.txt
+          pip install ruff mypy
 
-      - name: Run Ruff
+      - name: Run Ruff (Linter)
         run: ruff check .
 
-      - name: Run Mypy
-        run: mypy . --ignore-missing-imports
+      - name: Run Mypy (Type Checker)
+        run: mypy . --ignore-missing-imports 
 
   test:
     name: Run Test Suite
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     needs: lint-and-typecheck
-
     env:
       PYTHONPATH: packages/recognition-sdk/src
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: "pip"
-          cache-dependency-path: "requirements.txt"
+          # Points directly to the SDK's requirements file
+          cache-dependency-path: "packages/recognition-sdk/requirements.txt"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt pytest pytest-mock pytest-benchmark
+          pip install -r packages/recognition-sdk/requirements-dev.txt
+          pip install pytest pytest-mock pytest-benchmark
 
       - name: Run Contracts & Unit Tests
-        run: pytest -ra tests/contracts tests/unit
+        run: pytest tests/contracts/ tests/unit/
 
       - name: Run Integration Tests
-        run: pytest -ra tests/integration
+        run: pytest tests/integration/
