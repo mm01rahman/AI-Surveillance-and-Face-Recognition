@@ -1,3 +1,4 @@
+opencv-python
 black
 ruff
 pytest
@@ -5,3 +6,4 @@ pre-commit
 build
 mkdocs
 numpy
+onnxruntime
