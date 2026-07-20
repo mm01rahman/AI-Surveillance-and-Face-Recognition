@@ -23,8 +23,8 @@ def letterbox_image(
     new_unpad = int(round(shape[1] * r)), int(round(shape[0] * r))
     
     dw, dh = target_w - new_unpad[0], target_h - new_unpad[1]
-    dw /= 2
-    dh /= 2
+    dw = (target_w - new_unpad[0]) / 2.0
+    dh = (target_h - new_unpad[1]) / 2.0
     
     if shape[::-1] != new_unpad:
         # Cast the OpenCV return type to satisfy Pylance

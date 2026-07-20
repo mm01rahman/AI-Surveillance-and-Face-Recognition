@@ -12,6 +12,9 @@ class FAISSBackend(SearchBackend):
     def __init__(self, dimension: int, metric: DistanceMetric):
         self.dimension = dimension
         
+        # Explicitly declare the generic base type so Mypy accepts both branches
+        base_index: faiss.Index
+        
         # Inner Product equates to Cosine Similarity when vectors are L2 normalized
         if metric == DistanceMetric.COSINE:
             base_index = faiss.IndexFlatIP(dimension)
