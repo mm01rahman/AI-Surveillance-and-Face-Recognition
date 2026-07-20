@@ -1,4 +1,3 @@
-import pytest
 from pipeline.sdk import RecognitionSDK
 from enums import RecognitionStatus
 

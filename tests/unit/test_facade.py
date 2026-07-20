@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import MagicMock
 from pipeline.sdk import RecognitionSDK
 from enums import RecognitionStatus
