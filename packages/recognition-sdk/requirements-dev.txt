@@ -7,3 +7,4 @@ build
 mkdocs
 numpy
 onnxruntime
+faiss-cpu
