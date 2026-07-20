@@ -1,7 +1,7 @@
 import time
 import numpy as np
 import onnxruntime as ort
-
+from typing import cast
 from ..types import ImageArray
 from models import DetectionResult, DetectedFace
 from config import DetectorConfig, QualityConfig
@@ -48,7 +48,10 @@ class SCRFDDetector(Detector):
 
         # 2. Inference
         try:
-            outputs = self.session.run(None, {self.input_name: input_tensor})
+            outputs = cast(
+                list[np.ndarray], 
+                self.session.run(None, {self.input_name: input_tensor})
+            )
         except Exception as e:
             raise DetectionError(f"ONNX inference failed: {e}")
             
