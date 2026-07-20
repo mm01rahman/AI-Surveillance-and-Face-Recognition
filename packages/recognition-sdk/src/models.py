@@ -2,14 +2,14 @@ from dataclasses import dataclass, field
 from collections.abc import Sequence
 from typing import Optional, Tuple
 
-from .sdk_types import (
+from sdk_types import (
     EmbeddingVector,
     ImageArray,
     LandmarkPoint,
     PersonID,
     Metadata
 )
-from .enums import RecognitionStatus, QualityStatus, DetectorType, EmbedderType
+from enums import RecognitionStatus, QualityStatus, DetectorType, EmbedderType
 
 
 @dataclass

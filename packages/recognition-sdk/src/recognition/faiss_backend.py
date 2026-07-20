@@ -3,7 +3,7 @@ import numpy as np
 
 from enums import DistanceMetric
 from exceptions import MatchingError
-from ..sdk_types import PersonID
+from sdk_types import PersonID
 from .backend import SearchBackend
 
 class FAISSBackend(SearchBackend):

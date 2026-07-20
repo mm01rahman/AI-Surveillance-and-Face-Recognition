@@ -3,7 +3,7 @@ import numpy as np
 
 from models import Embedding, Match, MatchingResult, GalleryIdentity
 from config import MatcherConfig
-from ..sdk_types import PersonID
+from sdk_types import PersonID
 
 from .backend import SearchBackend
 from .metrics import compute_similarity
