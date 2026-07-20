@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from typing import cast
 
-from ..types import ImageArray
+from ..sdk_types import ImageArray
 from exceptions import AlignmentError
 
 def apply_similarity_transform(

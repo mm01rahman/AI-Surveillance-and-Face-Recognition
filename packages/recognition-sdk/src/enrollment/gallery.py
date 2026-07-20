@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from ..types import PersonID
+from ..sdk_types import PersonID
 from models import GalleryIdentity
 
 class GalleryRegistry:

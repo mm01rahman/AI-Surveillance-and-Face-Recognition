@@ -2,7 +2,7 @@ import time
 import numpy as np
 import onnxruntime as ort
 from typing import cast
-from ..types import ImageArray
+from ..sdk_types import ImageArray
 from models import DetectionResult, DetectedFace
 from config import DetectorConfig, QualityConfig
 from enums import DetectorType, Device, QualityStatus

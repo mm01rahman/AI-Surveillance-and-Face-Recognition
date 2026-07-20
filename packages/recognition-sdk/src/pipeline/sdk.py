@@ -1,7 +1,7 @@
 import time
 from typing import Any, Optional
 
-from ..types import ImageArray, PersonID
+from ..sdk_types import ImageArray, PersonID
 from config import RecognitionConfig
 from models import RecognitionResult, GalleryIdentity, DetectedFace, EmbeddingResult
 from enums import RecognitionStatus, EnrollmentStrategy

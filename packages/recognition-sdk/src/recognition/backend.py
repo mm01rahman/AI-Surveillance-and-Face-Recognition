@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from ..types import PersonID
+from ..sdk_types import PersonID
 
 class SearchBackend(ABC):
     """Abstract interface for all vector storage and search backends."""

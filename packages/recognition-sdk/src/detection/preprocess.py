@@ -2,7 +2,7 @@ import cv2
 from dataclasses import dataclass
 from typing import cast 
 
-from ..types import ImageArray
+from ..sdk_types import ImageArray
 
 @dataclass(frozen=True)
 class LetterboxMetadata:

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ..types import ImageArray
+from ..sdk_types import ImageArray
 from models import DetectionResult
 from config import DetectorConfig
 from enums import DetectorType

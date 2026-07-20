@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from collections.abc import Sequence
 from typing import Optional, Tuple
 
-from .types import (
+from .sdk_types import (
     EmbeddingVector,
     ImageArray,
     LandmarkPoint,
