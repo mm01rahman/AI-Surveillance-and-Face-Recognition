@@ -1,5 +1,5 @@
 import time
-from typing import TYPE_CHECKING, Any, Optional
+from typing import Any, Optional
 
 from sdk_types import ImageArray, PersonID
 from config import RecognitionConfig
@@ -14,13 +14,6 @@ from embedding.embedder import Embedder
 from recognition.backend import SearchBackend
 from recognition.matcher import IdentityMatcher
 from enrollment.enrollment import EnrollmentManager
-
-if TYPE_CHECKING:
-    from alignment.arcface_aligner import ArcFaceAligner
-    from detection.scrfd_detector import SCRFDDetector
-    from embedding.arcface_embedder import ArcFaceEmbedder
-    from enrollment.persistence import JSONGalleryRepository
-    from recognition.faiss_backend import FAISSBackend
 
 
 class RecognitionSDK:

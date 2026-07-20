@@ -6,7 +6,7 @@ import pytest
 
 from config import DetectorConfig, EmbedderConfig, MatcherConfig, QualityConfig, RecognitionConfig, RepositoryConfig
 from detection.detector import Detector
-from enums import DetectorType, QualityStatus, RecognitionStatus
+from enums import DetectorType, QualityStatus
 from exceptions import DetectionError
 from models import AlignedFace, BoundingBox, DetectedFace, DetectionResult, Embedding, EmbeddingResult, FaceLandmarks, MatchingResult, Match
 from pipeline.sdk import RecognitionSDK
