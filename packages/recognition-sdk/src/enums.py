@@ -31,6 +31,11 @@ class DetectorType(str, Enum):
 class EmbedderType(str, Enum):
     ARCFACE = "arcface"
     
+class EnrollmentStrategy(str, Enum):
+    LARGEST = "largest"
+    HIGHEST_CONFIDENCE = "highest_confidence"
+    SINGLE_ONLY = "single_only"
+    
 class ModelStatus(str, Enum):
     LOADED = "loaded"
     NOT_LOADED = "not_loaded"
