@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Tuple
 
-from .enums import Device, DistanceMetric, DetectorType, EmbedderType
-from .exceptions import ConfigurationError
+from enums import Device, DistanceMetric, DetectorType, EmbedderType
+from exceptions import ConfigurationError
 
 
 @dataclass(frozen=True)
@@ -44,6 +44,8 @@ class MatcherConfig:
     def __post_init__(self):
         if self.top_k < 1:
             raise ConfigurationError("top_k must be at least 1")
+        if self.threshold > 1.0:
+            raise ConfigurationError("threshold cannot exceed 1.0")
         if self.threshold < 0.0:
             raise ConfigurationError("threshold cannot be negative")
 

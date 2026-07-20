@@ -1,7 +1,7 @@
 import time
 from typing import Any, Optional
 
-from ..sdk_types import ImageArray, PersonID
+from sdk_types import ImageArray, PersonID
 from config import RecognitionConfig
 from models import RecognitionResult, GalleryIdentity, DetectedFace, EmbeddingResult
 from enums import RecognitionStatus, EnrollmentStrategy
@@ -9,15 +9,10 @@ from exceptions import RecognitionError
 
 # Orchestrators
 from detection.detector import Detector
-from detection.scrfd_detector import SCRFDDetector
 from alignment.aligner import Aligner
-from alignment.arcface_aligner import ArcFaceAligner
 from embedding.embedder import Embedder
-from embedding.arcface_embedder import ArcFaceEmbedder
 from recognition.backend import SearchBackend
-from recognition.faiss_backend import FAISSBackend
 from recognition.matcher import IdentityMatcher
-from enrollment.persistence import JSONGalleryRepository
 from enrollment.enrollment import EnrollmentManager
 
 
@@ -41,20 +36,41 @@ class RecognitionSDK:
         self._config = config
         
         # 1. Initialize core AI modules (Use injected or default to ArcFace/SCRFD)
-        self._detector = detector or SCRFDDetector(config.detector)
-        self._aligner = aligner or ArcFaceAligner() 
-        self._embedder = embedder or ArcFaceEmbedder(config.embedder)
+        if detector is None:
+            from detection.scrfd_detector import SCRFDDetector
+
+            detector = SCRFDDetector(config.detector)
+        if aligner is None:
+            from alignment.arcface_aligner import ArcFaceAligner
+
+            aligner = ArcFaceAligner()
+        if embedder is None:
+            from embedding.arcface_embedder import ArcFaceEmbedder
+
+            embedder = ArcFaceEmbedder(config.embedder)
+
+        self._detector = detector
+        self._aligner = aligner
+        self._embedder = embedder
         
         # 2. Initialize storage and matching
-        self._search_backend = search_backend or FAISSBackend(
-            dimension=config.embedder.embedding_size,
-            metric=config.matcher.metric
-        )
+        if search_backend is None:
+            from recognition.faiss_backend import FAISSBackend
+
+            search_backend = FAISSBackend(
+                dimension=config.embedder.embedding_size,
+                metric=config.matcher.metric
+            )
+        self._search_backend = search_backend
         self._matcher = matcher or IdentityMatcher(config.matcher, self._search_backend)
         
         # 3. Initialize enrollment and persistence
-        repository = JSONGalleryRepository(config.repository)
-        self._enrollment = enrollment or EnrollmentManager(config.repository, repository, self._search_backend)
+        if enrollment is None:
+            from enrollment.persistence import JSONGalleryRepository
+
+            repository = JSONGalleryRepository(config.repository)
+            enrollment = EnrollmentManager(config.repository, repository, self._search_backend)
+        self._enrollment = enrollment
         
         # Lazy loading based on configuration (avoids locking up on init for massive galleries)
         if getattr(config.repository, 'auto_load', False):

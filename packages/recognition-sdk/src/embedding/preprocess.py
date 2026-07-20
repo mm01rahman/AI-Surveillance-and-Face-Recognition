@@ -1,5 +1,5 @@
 import numpy as np
-from ..sdk_types import ImageArray
+from sdk_types import ImageArray
 from exceptions import EmbeddingError
 
 def prepare_input_tensor(image: ImageArray, expected_size: tuple[int, int] = (112, 112)) -> np.ndarray:

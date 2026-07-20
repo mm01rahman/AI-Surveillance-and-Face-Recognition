@@ -1,6 +1,6 @@
 import numpy as np
 
-from ..sdk_types import PersonID
+from sdk_types import PersonID
 from models import GalleryIdentity
 from config import RepositoryConfig
 from exceptions import RepositoryError

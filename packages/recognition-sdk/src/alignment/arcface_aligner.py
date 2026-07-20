@@ -1,7 +1,7 @@
 import numpy as np
 from dataclasses import dataclass, field
 
-from ..sdk_types import ImageArray
+from sdk_types import ImageArray
 from models import FaceLandmarks, AlignedFace
 from .aligner import Aligner
 from alignment.template import get_reference_landmarks
