@@ -1,9 +1,9 @@
 import numpy as np
 from dataclasses import dataclass, field
 
-from ...types import ImageArray
+from ..types import ImageArray
 from models import FaceLandmarks, AlignedFace
-from aligner import Aligner
+from .aligner import Aligner
 from alignment.template import get_reference_landmarks
 from alignment.similarity import apply_similarity_transform
 

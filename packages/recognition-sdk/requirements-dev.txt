@@ -8,3 +8,4 @@ mkdocs
 numpy
 onnxruntime
 faiss-cpu
+pydantic

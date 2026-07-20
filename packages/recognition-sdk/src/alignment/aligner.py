@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ...types import ImageArray
+from ..types import ImageArray
 from models import FaceLandmarks, AlignedFace
 
 

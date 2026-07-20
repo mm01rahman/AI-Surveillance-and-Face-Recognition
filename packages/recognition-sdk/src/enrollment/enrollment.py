@@ -5,8 +5,8 @@ from models import GalleryIdentity
 from config import RepositoryConfig
 from exceptions import RepositoryError
 
-from repository import GalleryRepository
-from gallery import GalleryRegistry
+from .repository import GalleryRepository
+from .gallery import GalleryRegistry
 from recognition.backend import SearchBackend
 class EnrollmentManager:
     """Orchestrates gallery CRUD operations with transactional rollback semantics."""

@@ -7,10 +7,10 @@ from config import EmbedderConfig
 from enums import EmbedderType
 from exceptions import EmbeddingError
 
-from embedder import Embedder
-from session import create_ort_session
-from preprocess import prepare_input_tensor
-from normalize import l2_normalize
+from .embedder import Embedder
+from .session import create_ort_session
+from .preprocess import prepare_input_tensor
+from .normalize import l2_normalize
 
 
 class ArcFaceEmbedder(Embedder):
